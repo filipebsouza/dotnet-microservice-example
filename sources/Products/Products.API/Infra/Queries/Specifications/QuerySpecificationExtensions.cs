@@ -1,5 +1,7 @@
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Products.API.Infra.Filters;
 
 namespace Base.Infra.Queries.Specifications
 {
@@ -14,7 +16,27 @@ namespace Base.Infra.Queries.Specifications
             var secondaryResult = spec.IncludeStrings.Aggregate(queryableResultWithIncludes, (current, include) => current.Include(include));
 
             // return the result of the query using the specification's criteria expression
-            return secondaryResult.Where(spec.Criteria);
+            if (spec.Pagination == null)
+            {
+                return secondaryResult.Where(spec.Criteria);
+            }
+            else
+            {
+                secondaryResult = secondaryResult
+                    .Skip(1)
+                    .Take(spec.Pagination.ItensPerPage);
+                var parameter = Expression.Parameter(typeof(T), "x");
+                Expression property = Expression.Property(parameter, spec.Pagination.OrderByFieldName);
+                var lambda = Expression.Lambda(property, parameter);
+                var orderByMethod = typeof(Queryable).GetMethods().First(x =>
+                    x.Name == (spec.Pagination.OrderBy == OrderByEnum.ASC ? "OrderBy" : "OrderByDescending") &&
+                    x.GetParameters().Length == 2
+                );
+                var orderByGeneric = orderByMethod.MakeGenericMethod(typeof(T), property.Type);
+                var result = orderByGeneric.Invoke(null, new object[] { secondaryResult, lambda });
+
+                return (IOrderedQueryable<T>)result;
+            }
         }
     }
 }
