@@ -20,7 +20,9 @@ namespace Products.Infra.Queries
         public IQueryable<Product> Get(ProductFilter filter)
         {
             return _productContext.Set<Product>()
-                .Specify(new ProductContainsNameSpecification(filter.Name));
+                .Specify(new ProductContainsNameSpecification(filter.Name))
+                .Specify(new ProductRangeByPriceSpecification(filter.MinPrice, filter.MaxPrice))
+                .Specify(new PaginationSpecification<Product>());
         }
     }
 }

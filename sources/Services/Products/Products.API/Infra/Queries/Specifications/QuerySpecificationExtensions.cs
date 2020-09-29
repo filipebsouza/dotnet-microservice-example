@@ -22,9 +22,16 @@ namespace Base.Infra.Queries.Specifications
             }
             else
             {
+                var totalItens = secondaryResult
+                    .Count();
+
+                spec.Pagination.Total = totalItens;
+                spec.Pagination.Pages = (totalItens + 1) / spec.Pagination.ItensPerPage;
+
                 secondaryResult = secondaryResult
-                    .Skip(1)
+                    .Skip(spec.Pagination.ItensPerPage * (spec.Pagination.CurrentPage - 1))
                     .Take(spec.Pagination.ItensPerPage);
+
                 var parameter = Expression.Parameter(typeof(T), "x");
                 Expression property = Expression.Property(parameter, spec.Pagination.OrderByFieldName);
                 var lambda = Expression.Lambda(property, parameter);
