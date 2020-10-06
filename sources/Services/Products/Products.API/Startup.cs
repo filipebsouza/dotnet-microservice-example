@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Askmethat.Aspnet.JsonLocalizer.Extensions;
+using Askmethat.Aspnet.JsonLocalizer.Localizer;
+using Base.Resources.Notifications;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,9 +17,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Products.API.Infra.Contexts;
 using Products.API.Infra.IoC;
+using Products.API.Resources.Notifications;
 
 namespace Products.API
 {
@@ -39,37 +43,17 @@ namespace Products.API
         {
             services.AddControllers();
 
+            services.AddSingleton<IStringLocalizerFactory, Base.Resources.Notifications.JsonStringLocalizerFactory>();
+            services.AddSingleton<IStringLocalizer>(service => new JsonStringLocalizer("Resources/Notifications/Product"));
+            services.AddLocalization(options => options.ResourcesPath = "Resources/Notifications");
+
+            services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductDB"));
+
             ContextsServiceResolver.AddServices(services);
             DomainsServiceResolver.AddServices(services);
             QueriesServiceResolver.AddServices(services);
 
-            services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductDB"));
-
-            var jsonLocalizationOptions = Configuration.GetSection(nameof(JsonLocalizationOptions));
-
-            _jsonLocalizationOptions = jsonLocalizationOptions.Get<JsonLocalizationOptions>();
-            _defaultRequestCulture = new RequestCulture(_jsonLocalizationOptions.DefaultCulture,
-                _jsonLocalizationOptions.DefaultUICulture);
-            _supportedCultures = _jsonLocalizationOptions.SupportedCultureInfos.ToList();
-
-            _ = services.AddJsonLocalization(options =>
-            {
-                options.ResourcesPath = _jsonLocalizationOptions.ResourcesPath;
-                options.UseBaseName = _jsonLocalizationOptions.UseBaseName;
-                options.CacheDuration = _jsonLocalizationOptions.CacheDuration;
-                options.SupportedCultureInfos = _jsonLocalizationOptions.SupportedCultureInfos;
-                options.FileEncoding = _jsonLocalizationOptions.FileEncoding;
-                options.IsAbsolutePath = _jsonLocalizationOptions.IsAbsolutePath;
-            });
-
-            _ = services.Configure<RequestLocalizationOptions>(options =>
-           {
-               options.DefaultRequestCulture = _defaultRequestCulture;
-               // Formatting numbers, dates, etc.
-               options.SupportedCultures = _supportedCultures;
-               // UI strings that we have localized.
-               options.SupportedUICultures = _supportedCultures;
-           });
+            services.AddScoped(typeof(IProductNotifications), typeof(ProductNotifications));
 
             services.AddSwaggerGen(s =>
             {
@@ -98,15 +82,6 @@ namespace Products.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            _ = app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = _defaultRequestCulture,
-                // Formatting numbers, dates, etc.
-                SupportedCultures = _supportedCultures,
-                // UI strings that we have localized.
-                SupportedUICultures = _supportedCultures
-            });
 
             app.UseHttpsRedirection();
 

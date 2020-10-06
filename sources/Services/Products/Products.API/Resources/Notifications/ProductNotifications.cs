@@ -4,9 +4,9 @@ namespace Products.API.Resources.Notifications
 {
     public class ProductNotifications : IProductNotifications
     {
-        private readonly IStringLocalizer<ProductNotifications> _localizer;
+        private readonly IStringLocalizer _localizer;
 
-        public ProductNotifications(IStringLocalizer<ProductNotifications> localizer)
+        public ProductNotifications(IStringLocalizer localizer)
         {
             _localizer = localizer;
         }

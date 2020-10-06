@@ -4,6 +4,7 @@ namespace Products.API.Domain
 {
     public class Product : EntityBase
     {
+        protected Product() { }
         public Product(string name, string description)
         {
             Name = name;

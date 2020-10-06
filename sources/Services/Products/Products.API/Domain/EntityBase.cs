@@ -5,6 +5,6 @@ namespace Base.Domain
 {
     public class EntityBase : Notifiable
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
     }
 }

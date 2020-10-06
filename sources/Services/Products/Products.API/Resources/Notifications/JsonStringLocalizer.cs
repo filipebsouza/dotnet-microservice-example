@@ -10,10 +10,10 @@ namespace Base.Resources.Notifications
     public class JsonStringLocalizer : IStringLocalizer
     {
         List<JsonLocalization> localization = new List<JsonLocalization>();
-        public JsonStringLocalizer()
+        public JsonStringLocalizer(string resourseJson = "resources")
         {
             JsonSerializer serializer = new JsonSerializer();
-            localization = JsonConvert.DeserializeObject<List<JsonLocalization>>(File.ReadAllText(@"localization.json"));
+            localization = JsonConvert.DeserializeObject<List<JsonLocalization>>(File.ReadAllText($"{resourseJson}.json"));
         }
 
         public LocalizedString this[string name]

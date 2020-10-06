@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,7 @@ namespace Products.API.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductsController> _logger;
+        private readonly ILogger<ProductsController> _logger;        
 
         public ProductsController(
             ILogger<ProductsController> logger
@@ -21,11 +22,12 @@ namespace Products.API.Controllers
         }
 
         [HttpGet]
+        //[AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get(
             [FromServices] IGetAllProductsQuery getAllProducts,
-            [FromBody] ProductFilter productFilter
+            [FromQuery] ProductFilter productFilter
         ) => Ok(getAllProducts.Get(productFilter));
     }
 }

@@ -1,8 +1,8 @@
 [
     {
-        "ProductNameNotBeInvalid": "Hello",
+        "Key": "ProductNameNotBeInvalid",
         "LocalizedValue": {
-            "pt-FR": "Produto é inválido.",
+            "pt-BR": "Produto é inválido.",
             "en-US": "Product is invalid."
         }
     }
