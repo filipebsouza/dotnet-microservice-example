@@ -7,7 +7,10 @@ namespace Products.Infra.Queries.Filters
     {
         public ProductContainsNameSpecification(string productName)
         {
-            Criteria = where => where.Name.Contains(productName);
+            if (AreParametersValid(productName))
+                Criteria = where => where.Name.Contains(productName);
         }
+
+        private bool AreParametersValid(string productName) => !string.IsNullOrWhiteSpace(productName);
     }
 }

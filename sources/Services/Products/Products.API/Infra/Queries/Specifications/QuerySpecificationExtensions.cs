@@ -18,7 +18,10 @@ namespace Base.Infra.Queries.Specifications
             // return the result of the query using the specification's criteria expression
             if (spec.Pagination == null)
             {
-                return secondaryResult.Where(spec.Criteria);
+                if (spec.Criteria != null)
+                    return secondaryResult.Where(spec.Criteria);
+                else
+                    return secondaryResult;
             }
             else
             {
@@ -27,6 +30,9 @@ namespace Base.Infra.Queries.Specifications
 
                 spec.Pagination.Total = totalItens;
                 spec.Pagination.Pages = (totalItens + 1) / spec.Pagination.ItensPerPage;
+
+                if (spec.Criteria != null)
+                    secondaryResult = secondaryResult.Where(spec.Criteria);
 
                 secondaryResult = secondaryResult
                     .Skip(spec.Pagination.ItensPerPage * (spec.Pagination.CurrentPage - 1))

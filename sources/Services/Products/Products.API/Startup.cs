@@ -34,11 +34,6 @@ namespace Products.API
 
         public IConfiguration Configuration { get; }
 
-        JsonLocalizationOptions _jsonLocalizationOptions;
-        List<CultureInfo> _supportedCultures;
-        RequestCulture _defaultRequestCulture;
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -47,7 +42,11 @@ namespace Products.API
             services.AddSingleton<IStringLocalizer>(service => new JsonStringLocalizer("Resources/Notifications/Product"));
             services.AddLocalization(options => options.ResourcesPath = "Resources/Notifications");
 
-            services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductDB"));
+            services.AddDbContext<ProductContext>(opt =>
+                {
+                    opt.UseInMemoryDatabase("ProductDB");
+                    opt.EnableDetailedErrors();                    
+                });
 
             ContextsServiceResolver.AddServices(services);
             DomainsServiceResolver.AddServices(services);
