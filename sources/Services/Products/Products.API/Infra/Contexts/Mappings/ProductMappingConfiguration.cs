@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Products.API.Domain;
+using Products.API.Domain.Entities;
 
 namespace Products.API.Infra.Contexts.Mappings
 {

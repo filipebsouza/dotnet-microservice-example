@@ -1,6 +1,6 @@
 using System.Linq;
 using Base.Infra.Queries.Specifications;
-using Products.API.Domain;
+using Products.API.Domain.Entities;
 using Products.API.Infra.Contexts;
 using Products.API.Infra.Filters;
 using Products.API.Resources.Notifications;
