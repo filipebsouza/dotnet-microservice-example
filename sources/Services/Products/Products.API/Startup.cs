@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Askmethat.Aspnet.JsonLocalizer.Extensions;
 using Askmethat.Aspnet.JsonLocalizer.Localizer;
-using Base.Resources.Notifications;
+using Common.Resources.Notifications;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,10 +38,6 @@ namespace Products.API
         {
             services.AddControllers();
 
-            services.AddSingleton<IStringLocalizerFactory, Base.Resources.Notifications.JsonStringLocalizerFactory>();
-            services.AddSingleton<IStringLocalizer>(service => new JsonStringLocalizer("Resources/Notifications/Product"));
-            services.AddLocalization(options => options.ResourcesPath = "Resources/Notifications");
-
             services.AddDbContext<ProductContext>(opt =>
                 {
                     opt.UseInMemoryDatabase("ProductDB");
@@ -51,8 +47,7 @@ namespace Products.API
             ContextsServiceResolver.AddServices(services);
             DomainsServiceResolver.AddServices(services);
             QueriesServiceResolver.AddServices(services);
-
-            services.AddScoped(typeof(IProductNotifications), typeof(ProductNotifications));
+            NotificationsServiceResolver.AddServices(services);
 
             services.AddSwaggerGen(s =>
             {
@@ -83,9 +78,7 @@ namespace Products.API
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -98,7 +91,7 @@ namespace Products.API
             app.UseSwaggerUI(s =>
             {
                 s.RoutePrefix = "swagger";
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Api Example");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Products API");
             });
         }
     }

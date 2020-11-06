@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Localization;
+using Products.API.Resources.Notifications.Interfaces;
 
 namespace Products.API.Resources.Notifications
 {

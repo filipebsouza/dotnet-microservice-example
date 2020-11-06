@@ -1,9 +1,9 @@
 using System.Linq;
-using Base.Infra.Queries.Specifications;
+using Common.Infra.Queries.Specifications;
 using Products.API.Domain.Entities;
 using Products.API.Infra.Contexts;
 using Products.API.Infra.Filters;
-using Products.API.Resources.Notifications;
+using Products.API.Resources.Notifications.Interfaces;
 using Products.Infra.Queries.Filters;
 using Products.Infra.Queries.Interfaces;
 

@@ -45,8 +45,7 @@ namespace Products.Tests.Domain
             );
 
             //Then
-            product.Valid.Should().BeTrue();
-            invalidProductName.Should().BeEquivalentTo(product.Name);
+            product.Should().BeNull();            
         }
     }
 }
