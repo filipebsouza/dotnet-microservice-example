@@ -1,7 +1,7 @@
 using Base.Infra.Queries.Specifications;
 using Products.API.Domain;
 
-namespace Products.Infra.Queries.Filters
+namespace Products.API.Infra.Queries.Filters
 {
     public class ProductClassificationSpecification : BaseSpecification<Product>
     {

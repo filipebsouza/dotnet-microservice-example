@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Products.API.Infra.Filters;
-using Products.Infra.Queries.Interfaces;
+using Products.API.Infra.Queries.Interfaces;
 
 namespace Products.API.Controllers
 {
@@ -12,7 +12,7 @@ namespace Products.API.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductsController> _logger;        
+        private readonly ILogger<ProductsController> _logger;
 
         public ProductsController(
             ILogger<ProductsController> logger
@@ -28,5 +28,13 @@ namespace Products.API.Controllers
             [FromServices] IGetAllProductsQuery getAllProducts,
             [FromQuery] ProductFilter productFilter
         ) => Ok(getAllProducts.Get(productFilter));
+
+        // [HttpPost]
+        // [ProducesResponseType(StatusCodes.Status200OK)]
+        // [ProducesResponseType(StatusCodes.Status404NotFound)]
+        // public IActionResult Post(
+        //     [FromServices] IGetAllProductsQuery getAllProducts,
+        //     [FromQuery] ProductFilter productFilter 
+        // ) => Ok(getAllProducts.Get(productFilter));
     }
 }

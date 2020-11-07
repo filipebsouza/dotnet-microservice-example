@@ -4,28 +4,32 @@ using Products.API.Domain;
 using Products.API.Infra.Contexts;
 using Products.API.Infra.Filters;
 using Products.API.Resources.Notifications;
-using Products.Infra.Queries.Filters;
-using Products.Infra.Queries.Interfaces;
+using Products.API.Infra.Queries.Filters;
+using Products.API.Infra.Queries.Interfaces;
+using Base.Resources.Notifications;
 
-namespace Products.Infra.Queries
+namespace Products.API.Infra.Queries
 {
     public class GetAllProductsQuery : IGetAllProductsQuery
     {
         private readonly ProductContext _productContext;
         private readonly IProductNotifications _notifications;
+        private readonly IBaseNotificationsContext _notificationsContext;
 
         public GetAllProductsQuery(
             ProductContext productContext,
-            IProductNotifications notifications
+            IProductNotifications notifications,
+            IBaseNotificationsContext notificationsContext
         )
         {
             _productContext = productContext;
             _notifications = notifications;
+            _notificationsContext = notificationsContext;
         }
 
         public IQueryable<Product> Get(ProductFilter filter)
         {
-            var teste = _notifications.ProductNameNotBeInvalid;
+            _notificationsContext.AddNotification(this.GetType().Name, _notifications.ProductNameNotBeInvalid);
 
             return _productContext.Set<Product>()
                 .Specify(new ProductContainsNameSpecification(filter.Name))

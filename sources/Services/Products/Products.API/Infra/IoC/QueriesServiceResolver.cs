@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Products.Infra.Queries;
-using Products.Infra.Queries.Interfaces;
+using Products.API.Infra.Queries;
+using Products.API.Infra.Queries.Interfaces;
 
 namespace Products.API.Infra.IoC
 {

@@ -9,12 +9,14 @@ namespace Base.Resources.Notifications
 {
     public class JsonStringLocalizer : IStringLocalizer
     {
-        List<JsonLocalization> localization = new List<JsonLocalization>();
+        string _culture = "en-US";
+        List<JsonLocalization> _localization = new List<JsonLocalization>();
         public JsonStringLocalizer(string resourseJson = "resources")
         {
-            JsonSerializer serializer = new JsonSerializer();
-            localization = JsonConvert.DeserializeObject<List<JsonLocalization>>(File.ReadAllText($"{resourseJson}.json"));
+            _localization = JsonConvert.DeserializeObject<List<JsonLocalization>>(File.ReadAllText($"{resourseJson}.json"));
         }
+
+        public void SetCulture(string culture) => _culture = culture;
 
         public LocalizedString this[string name]
         {
@@ -35,21 +37,26 @@ namespace Base.Resources.Notifications
             }
         }
 
-        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
-        {
-            return localization.Where(l => l.LocalizedValue.Keys.Any(lv => lv == CultureInfo.CurrentCulture.Name)).Select(l => new LocalizedString(l.Key, l.LocalizedValue[CultureInfo.CurrentCulture.Name], true));
-        }
+        public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures) =>
+            _localization
+                .Where(l => l.LocalizedValue.Keys.Any(lv => lv == _culture))
+                .Select(l => new LocalizedString(l.Key, l.LocalizedValue[_culture], true));
 
         public IStringLocalizer WithCulture(CultureInfo culture)
         {
-            return new JsonStringLocalizer();
+            var jsonStringLocalizer = new JsonStringLocalizer();
+
+            if (culture != null)
+                jsonStringLocalizer.SetCulture(culture.Name);
+
+            return jsonStringLocalizer;
         }
 
         private string GetString(string name)
         {
-            var query = localization.Where(l => l.LocalizedValue.Keys.Any(lv => lv == CultureInfo.CurrentCulture.Name));
+            var query = _localization.Where(l => l.LocalizedValue.Keys.Any(lv => lv == _culture));
             var value = query.FirstOrDefault(l => l.Key == name);
-            return value.LocalizedValue[CultureInfo.CurrentCulture.Name];
+            return value.LocalizedValue[_culture];
         }
     }
 }
