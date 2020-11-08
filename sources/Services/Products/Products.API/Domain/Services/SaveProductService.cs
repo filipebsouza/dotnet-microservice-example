@@ -1,17 +1,16 @@
 using System.Threading.Tasks;
-using Base.Resources.Notifications;
+using Common.Resources.Notifications.Interfaces;
+using Products.API.Domain.Service.Interfaces;
 using Products.API.Domain.Dtos;
-using Products.API.Resources.Notifications;
+using Products.API.Resources.Notifications.Interfaces;
 
 namespace Products.API.Domain.Service
 {
-    public class SaveProductService : BaseNotificationsContext, ISaveProductService
+    public class SaveProductService : ISaveProductService
     {
-        private readonly IProductNotifications _notifications;
+        private readonly IProductNotifications _notifications;        
 
-        public SaveProductService(
-            IProductNotifications notifications
-        )
+        public SaveProductService(IProductNotifications notifications)
         {
             _notifications = notifications;
         }

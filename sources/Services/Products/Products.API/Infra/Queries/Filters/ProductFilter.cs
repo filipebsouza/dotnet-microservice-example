@@ -1,3 +1,5 @@
+using Common.Infra.Queries.Filters;
+
 namespace Products.API.Infra.Filters
 {
     public class ProductFilter

@@ -1,6 +1,7 @@
 using System.Linq;
+using FluentAssertions;
 using Bogus;
-using Products.API.Domain;
+using Products.API.Domain.Entities;
 using Xunit;
 
 namespace Products.Tests.Domain
@@ -27,8 +28,24 @@ namespace Products.Tests.Domain
             );
 
             //Then
-            Assert.True(product.Valid);
-            Assert.Equal(productName, product.Name);
+            product.Valid.Should().BeTrue();
+            productName.Should().BeEquivalentTo(product.Name);
+        }
+
+        [Fact]
+        public void ProductNameShoulBeInvalid()
+        {
+            //Given
+            var invalidProductName = (string)null;
+
+            //When
+            var product = new Product(
+                invalidProductName,
+                string.Concat(_faker.Lorem.Words(10))
+            );
+
+            //Then
+            product.Should().BeNull();            
         }
     }
 }

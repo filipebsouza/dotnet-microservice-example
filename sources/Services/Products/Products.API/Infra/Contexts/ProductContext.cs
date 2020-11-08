@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Products.API.Domain;
+using Products.API.Domain.Entities;
 using Products.API.Infra.Contexts.Mappings;
 
 namespace Products.API.Infra.Contexts

@@ -1,5 +1,5 @@
-using Base.Infra.Queries.Specifications;
-using Products.API.Infra.Filters;
+using Common.Infra.Queries.Filters;
+using Common.Infra.Queries.Specifications;
 
 namespace Products.API.Infra.Queries.Filters
 {

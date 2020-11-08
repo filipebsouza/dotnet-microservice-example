@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 
-namespace Base.Resources.Notifications
+namespace Common.Resources.Notifications
 {
     public class JsonStringLocalizer : IStringLocalizer
     {

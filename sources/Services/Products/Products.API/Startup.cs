@@ -1,29 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using Askmethat.Aspnet.JsonLocalizer.Extensions;
-using Askmethat.Aspnet.JsonLocalizer.Localizer;
-using Base.API.Filters;
-using Base.Domain.Dtos;
-using Base.Resources.Notifications;
+using Common.API.Filters;
+using Common.Resources.Notifications;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 using Products.API.Infra.Contexts;
 using Products.API.Infra.IoC;
-using Products.API.Resources.Notifications;
 
 namespace Products.API
 {
@@ -31,29 +20,22 @@ namespace Products.API
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
-
-            var teste = Configuration.GetSection<DevelopmentEnvDto>("DevelopmentEnv");
-
-            AppSettings = new AppSettingsDto();
+            Configuration = configuration;            
         }
 
-        public IConfiguration Configuration { get; }
-        public AppSettingsDto AppSettings { get; }
+        public IConfiguration Configuration { get; }        
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(options =>
             {
-                options.Filters.Add(typeof(CultureFilter));
+                options.Filters.Add(typeof(Common.API.Filters.CultureFilter));
                 options.Filters.Add(typeof(NotificationFilter));
             });
 
-            services.AddSingleton<IStringLocalizerFactory, Base.Resources.Notifications.JsonStringLocalizerFactory>();
+            services.AddSingleton<IStringLocalizerFactory, Common.Resources.Notifications.JsonStringLocalizerFactory>();
             services.AddSingleton<IStringLocalizer>(service => new JsonStringLocalizer("Resources/Notifications/Product"));
             services.AddLocalization(options => options.ResourcesPath = "Resources/Notifications");
-
-            var teste = Configuration["DevelopmentEnv"];
 
             services.AddDbContext<ProductContext>(opt =>
                 {
@@ -64,9 +46,6 @@ namespace Products.API
             ContextsServiceResolver.AddServices(services);
             DomainsServiceResolver.AddServices(services);
             QueriesServiceResolver.AddServices(services);
-
-            services.AddScoped(typeof(IBaseNotificationsContext), typeof(BaseNotificationsContext));
-            services.AddScoped(typeof(IProductNotifications), typeof(ProductNotifications));
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

@@ -1,5 +1,5 @@
-using Base.Infra.Queries.Specifications;
-using Products.API.Domain;
+using Common.Infra.Queries.Specifications;
+using Products.API.Domain.Entities;
 
 namespace Products.API.Infra.Queries.Filters
 {
