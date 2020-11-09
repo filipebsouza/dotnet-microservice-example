@@ -4,7 +4,7 @@ using Bogus;
 using Products.API.Domain.Entities;
 using Xunit;
 
-namespace Products.Tests.Domain
+namespace Products.Tests.UnitTests.Domain
 {
     public class ProductTests
     {
