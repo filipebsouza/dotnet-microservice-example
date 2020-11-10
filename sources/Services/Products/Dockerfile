@@ -6,12 +6,12 @@ WORKDIR /app
 RUN dotnet --version
 
 # Copiar csproj e restaurar dependencias
-COPY Services/Products/Products.API/*.csproj ./
+COPY sources/Services/Products/Products.API/*.csproj ./
 RUN dotnet restore
 
 # Build da aplicacao
-COPY Common/. ./
-COPY Services/Products/Products.API/. ./
+COPY sources/Common/. ./
+COPY sources/Services/Products/Products.API/. ./
 RUN dotnet publish Products.API.csproj -c Release -o out
 
 # Build da imagem

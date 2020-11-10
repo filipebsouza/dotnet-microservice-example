@@ -1,0 +1,10 @@
+version: '3'
+services: 
+    products:
+        build:
+            context: .
+            dockerfile: ./sources/Services/Products/Dockerfile
+        ports: 
+            - '80:3000'
+        # Precisei desse cara no Windows
+        tty: true    
