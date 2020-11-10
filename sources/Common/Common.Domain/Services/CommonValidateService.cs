@@ -1,19 +1,21 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Common.Domain.Services.Interfaces;
 using Common.Resources.Notifications.Interfaces;
+using Microsoft.Extensions.Localization;
 
 namespace Common.Domain.Services
 {
     public abstract class CommonValidateService : ICommonValidateService
     {
         private readonly ICommonNotificationContext _notificationContext;
+        private readonly IStringLocalizer _stringLocalizer;
 
-        public CommonValidateService(ICommonNotificationContext notificationContext)
+        public CommonValidateService(ICommonNotificationContext notificationContext, IStringLocalizer stringLocalizer)
         {
             _notificationContext = notificationContext;
+            _stringLocalizer = stringLocalizer;
         }
 
         public async Task<bool> Validate<Dto>(Dto dto)
@@ -29,23 +31,32 @@ namespace Common.Domain.Services
                 {
                     var isNullableType = property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>);
                     if (isNullableType) continue;
-                }                
-
-                if (value == null)
-                {
-                    _notificationContext.AddNotification(name, )
                 }
 
-                if (value is int)
+                if (IsInvalidString(value) || IsInvalidInt(value) || IsInvalidDecimal(value))
                 {
+                    _notificationContext.AddNotification(name, _stringLocalizer[name]);
 
+                    return false;
                 }
-
-                //Nullable.GetUnderlyingType(property.DeclaringType)
-
             }
 
             return true;
+        }
+
+        private bool IsInvalidString(object value)
+        {
+            return value is string && string.IsNullOrWhiteSpace((string)value);
+        }
+
+        private bool IsInvalidInt(object value)
+        {
+            return value is int && (int)value <= 0;
+        }
+
+        private bool IsInvalidDecimal(object value)
+        {
+            return value is decimal && (decimal)value <= 0;
         }
     }
 }
