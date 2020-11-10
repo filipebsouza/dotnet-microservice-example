@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json;
 
 namespace Common.Resources.Notifications
 {
@@ -13,7 +13,7 @@ namespace Common.Resources.Notifications
         List<JsonLocalization> _localization = new List<JsonLocalization>();
         public JsonStringLocalizer(string resourseJson = "resources")
         {
-            _localization = JsonConvert.DeserializeObject<List<JsonLocalization>>(File.ReadAllText($"{resourseJson}.json"));
+            _localization = JsonSerializer.Deserialize<List<JsonLocalization>>(File.ReadAllText($"{resourseJson}.json"));
         }
 
         public void SetCulture(string culture) => _culture = culture;

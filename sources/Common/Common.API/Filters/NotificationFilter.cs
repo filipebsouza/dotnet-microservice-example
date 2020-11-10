@@ -1,11 +1,12 @@
 using System.Net;
 using System.Threading.Tasks;
+using System.Text.Json;
 using Common.API.Dtos;
 using Common.Resources.Notifications;
 using Common.Resources.Notifications.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
+
 
 namespace Common.API.Filters
 {
@@ -26,7 +27,7 @@ namespace Common.API.Filters
                 context.HttpContext.Response.ContentType = "application/json";
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                await context.HttpContext.Response.WriteAsync(JsonConvert.SerializeObject(json));
+                await context.HttpContext.Response.WriteAsync(JsonSerializer.Serialize(json));
             }
             else
             {

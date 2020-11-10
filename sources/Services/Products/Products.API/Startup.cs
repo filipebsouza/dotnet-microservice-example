@@ -31,7 +31,8 @@ namespace Products.API
             {
                 options.Filters.Add(typeof(Common.API.Filters.CultureFilter));
                 options.Filters.Add(typeof(NotificationFilter));
-            });
+            })
+            .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
             services.AddSingleton<IStringLocalizerFactory, Common.Resources.Notifications.JsonStringLocalizerFactory>();
             services.AddSingleton<IStringLocalizer>(service => new JsonStringLocalizer("Resources/Notifications/Product"));
