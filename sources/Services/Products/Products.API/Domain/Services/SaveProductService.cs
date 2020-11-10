@@ -8,7 +8,7 @@ namespace Products.API.Domain.Service
 {
     public class SaveProductService : ISaveProductService
     {
-        private readonly IProductNotifications _notifications;        
+        private readonly IProductNotifications _notifications;
 
         public SaveProductService(IProductNotifications notifications)
         {
@@ -17,7 +17,14 @@ namespace Products.API.Domain.Service
 
         public async Task<ProductSavedDto> Save(ProductToSaveDto dto)
         {
-            throw new System.NotImplementedException();
+            return await Task.Run<ProductSavedDto>(() =>
+            {
+                return new ProductSavedDto
+                {
+                    Name = "Mocked Saved Name",
+                    Description = "Mocked Saved Description"
+                };
+            });
         }
     }
 }

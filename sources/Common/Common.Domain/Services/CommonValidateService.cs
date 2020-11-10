@@ -20,28 +20,31 @@ namespace Common.Domain.Services
 
         public async Task<bool> Validate<Dto>(Dto dto)
         {
-            var properties = (typeof(Dto)).GetProperties();
-
-            foreach (PropertyInfo property in properties)
+            return await Task.Run<bool>(() =>
             {
-                var name = property.Name;
-                var value = property.GetValue(dto, null);
+                var properties = (typeof(Dto)).GetProperties();
 
-                if (property.PropertyType.IsGenericType)
+                foreach (PropertyInfo property in properties)
                 {
-                    var isNullableType = property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>);
-                    if (isNullableType) continue;
+                    var name = property.Name;
+                    var value = property.GetValue(dto, null);
+
+                    if (property.PropertyType.IsGenericType)
+                    {
+                        var isNullableType = property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>);
+                        if (isNullableType) continue;
+                    }
+
+                    if (IsInvalidString(value) || IsInvalidInt(value) || IsInvalidDecimal(value))
+                    {
+                        _notificationContext.AddNotification(name, _stringLocalizer[name]);
+
+                        return false;
+                    }
                 }
 
-                if (IsInvalidString(value) || IsInvalidInt(value) || IsInvalidDecimal(value))
-                {
-                    _notificationContext.AddNotification(name, _stringLocalizer[name]);
-
-                    return false;
-                }
-            }
-
-            return true;
+                return true;
+            });
         }
 
         private bool IsInvalidString(object value)
