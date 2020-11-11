@@ -29,6 +29,29 @@ namespace Products.Tests.UnitTests.Domain.Services
         }
 
         [Fact]
+        public async Task NotifyWhenProductNameShouldBeInvalid()
+        {
+            //Given
+            var invalidName = string.Empty;
+            var dto = new ProductToSaveDto
+            {
+                Name = invalidName,
+                Description = _faker.Name.FirstName()                
+            };
+            var key = nameof(dto.Description);
+            var mockedErrorMessage = "Name is invalid.";
+            var localizedString = new LocalizedString(key, mockedErrorMessage);
+            _stringLocalizerMock.Setup(_ => _[key]).Returns(localizedString);
+
+            //When
+            var ehValido = await _validateSaveProductDtoService.Validate(dto);
+
+            //Then
+            ehValido.Should().BeFalse();
+            _notificationContextMock.Verify(n => n.AddNotification(key, mockedErrorMessage), Times.Once);
+        }
+
+        [Fact]
         public async Task NotifyWhenProductDescriptionShouldBeInvalid()
         {
             //Given

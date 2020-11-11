@@ -17,9 +17,7 @@ namespace Products.API.Controllers
     {
         private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(
-            ILogger<ProductsController> logger
-        )
+        public ProductsController(ILogger<ProductsController> logger)
         {
             _logger = logger;
         }
@@ -27,7 +25,8 @@ namespace Products.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get([FromServices] IGetAllProductsQuery getAllProducts, [FromQuery] ProductFilter productFilter) => Ok(getAllProducts.Get(productFilter));
+        public IActionResult Get([FromServices] IGetAllProductsQuery getAllProducts, [FromQuery] ProductFilter productFilter) =>
+            Ok(getAllProducts.Get(productFilter));
 
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]

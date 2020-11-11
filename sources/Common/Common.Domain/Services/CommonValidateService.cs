@@ -38,7 +38,6 @@ namespace Common.Domain.Services
                     if (IsInvalidString(value) || IsInvalidInt(value) || IsInvalidDecimal(value))
                     {
                         _notificationContext.AddNotification(name, _stringLocalizer[name]);
-
                         return false;
                     }
                 }

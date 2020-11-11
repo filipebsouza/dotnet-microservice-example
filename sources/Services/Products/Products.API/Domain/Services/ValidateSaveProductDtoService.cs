@@ -8,10 +8,8 @@ namespace Products.API.Domain.Service
 {
     public class ValidateSaveProductDtoService : CommonValidateService, IValidateSaveProductDtoService
     {
-        public ValidateSaveProductDtoService(
-            ICommonNotificationContext notificationContext,
-            IStringLocalizer stringLocalizer
-        ) : base(notificationContext, stringLocalizer)
+        public ValidateSaveProductDtoService(ICommonNotificationContext notificationContext, IStringLocalizer stringLocalizer) 
+            : base(notificationContext, stringLocalizer)
         {
         }
     }
