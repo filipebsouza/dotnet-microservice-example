@@ -13,5 +13,7 @@ namespace Products.API.Resources.Notifications
         }
 
         public string ProductNameNotBeInvalid => _localizer["ProductNameNotBeInvalid"];
+
+        public string ProductDescriptionNotBeInvalid => _localizer["ProductDescriptionNotBeInvalid"];
     }
 }

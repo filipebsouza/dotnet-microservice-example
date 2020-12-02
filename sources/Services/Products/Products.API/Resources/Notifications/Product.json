@@ -2,8 +2,15 @@
     {
         "Key": "ProductNameNotBeInvalid",
         "LocalizedValue": {
-            "pt-BR": "Produto é inválido.",
-            "en-US": "Product is invalid."
+            "pt-BR": "Nome do Produto é inválido.",
+            "en-US": "Product Name is invalid."
+        }
+    },
+    {
+        "Key": "ProductDescriptionNotBeInvalid",
+        "LocalizedValue": {
+            "pt-BR": "Descrição do Produto é inválido.",
+            "en-US": "Product Description is invalid."
         }
     }
 ]

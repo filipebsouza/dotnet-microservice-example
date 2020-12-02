@@ -3,16 +3,20 @@ using FluentAssertions;
 using Bogus;
 using Products.API.Domain.Entities;
 using Xunit;
+using Moq;
+using Products.API.Resources.Notifications.Interfaces;
 
 namespace Products.Tests.UnitTests.Domain
 {
     public class ProductTests
     {
         private readonly Faker _faker;
+        private readonly Mock<IProductNotifications> _productNotificationsMock;
 
         public ProductTests()
         {
             _faker = new Faker();
+            _productNotificationsMock = new Mock<IProductNotifications>();
         }
 
         [Fact]
@@ -24,7 +28,8 @@ namespace Products.Tests.UnitTests.Domain
             //When
             var product = new Product(
                 productName,
-                string.Concat(_faker.Lorem.Words(10))
+                string.Concat(_faker.Lorem.Words(10)),
+                _productNotificationsMock.Object
             );
 
             //Then
@@ -41,7 +46,8 @@ namespace Products.Tests.UnitTests.Domain
             //When
             var product = new Product(
                 invalidProductName,
-                string.Concat(_faker.Lorem.Words(10))
+                string.Concat(_faker.Lorem.Words(10)),
+                _productNotificationsMock.Object
             );
 
             //Then
