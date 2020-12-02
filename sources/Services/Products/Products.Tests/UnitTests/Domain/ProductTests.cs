@@ -42,6 +42,9 @@ namespace Products.Tests.UnitTests.Domain
         {
             //Given
             var invalidProductName = (string)null;
+            _productNotificationsMock
+                .Setup(_ => _.ProductNameNotBeInvalid)
+                .Returns(invalidProductName);
 
             //When
             var product = new Product(
@@ -51,7 +54,7 @@ namespace Products.Tests.UnitTests.Domain
             );
 
             //Then
-            product.Should().BeNull();            
+            product.Invalid.Should().BeTrue();
         }
     }
 }

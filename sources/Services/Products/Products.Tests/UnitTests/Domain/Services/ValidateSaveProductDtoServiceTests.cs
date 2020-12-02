@@ -38,7 +38,7 @@ namespace Products.Tests.UnitTests.Domain.Services
                 Name = invalidName,
                 Description = _faker.Name.FirstName()                
             };
-            var key = nameof(dto.Description);
+            var key = nameof(dto.Name);
             var mockedErrorMessage = "Name is invalid.";
             var localizedString = new LocalizedString(key, mockedErrorMessage);
             _stringLocalizerMock.Setup(_ => _[key]).Returns(localizedString);

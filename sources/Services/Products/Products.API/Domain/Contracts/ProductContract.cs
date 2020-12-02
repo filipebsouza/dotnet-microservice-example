@@ -20,7 +20,7 @@ namespace Products.API.Domain.Contracts
             this.IsNotNullOrWhiteSpace(
                 description,
                 nameof(description),
-                _notifications.ProductNameNotBeInvalid
+                _notifications.ProductDescriptionNotBeInvalid
             );
         }
     }
